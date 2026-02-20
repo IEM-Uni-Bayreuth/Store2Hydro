@@ -1,0 +1,82 @@
+# Store2Hydro config
+# Goal: test a minimal hydro + PHS system in France
+
+tutorial: false
+
+run:
+  name: "DE_2013_15_clusters_2050"
+
+scenario:
+  clusters:
+    - 15
+  opts:
+    - ""
+  sector-opts:
+    - ""
+  planning-horizons:
+    - 2050
+
+countries:
+  - DE
+
+# Snapshot period must overlap with the atlite cutout:
+# https://pypsa-eur.readthedocs.io/en/latest/data-cutouts.html
+
+# big problem is the opsd demand data, which only goes up to 2020-09
+snapshots:
+  start: "2013-01-01"
+  end: "2013-12-31"
+
+atlite:
+  default_cutout: "europe-2013-sarah3-era5"
+
+  # Alternative: create your own cutout for France with ERA5 data.
+  # Requires CDS API credentials:
+  # https://pypsa-eur.readthedocs.io/en/latest/preparation.html#module-build_cutout
+  # default_cutout: []  # Keep empty when generating a new cutout, e.g. fr-2023-era5
+  # cutouts:
+  #   fr-2023-era5:
+  #     module: era5
+  #     x: [-5.5, 9.8]
+  #     y: [41.0, 51.2]
+  #     time: ["2023-01-01", "2023-12-31"]
+  #     prepare_kwargs:
+  #       features:
+  #         - runoff
+  #         - height
+
+renewable:
+  hydro:
+    cutout: default
+    carriers:
+      - ror
+      - hydro
+      - PHS
+
+clustering:
+  exclude_carriers: []
+  temporal:
+    resolution_elec: 24h
+
+lines:
+  dynamic_line_rating:
+    activate: false
+
+# energy: []
+
+solving:
+  solver:
+    # Switch to "highs" or "cbc" if Gurobi is not available.
+    name: "gurobi"
+
+  check_objective:
+    enable: false
+
+load:
+  opsd_demand: false
+  supplement_synthetic: false
+
+# Test runs:
+# cd pypsa-eur
+# snakemake -call all --configfile ../config/DE_2013_15_clusters_2050.yaml --latency-wait 300 --cores all
+# snakemake -call solve_elec_networks --configfile ../config/DE_2013_15_clusters_2050.yaml --latency-wait 300 --cores all

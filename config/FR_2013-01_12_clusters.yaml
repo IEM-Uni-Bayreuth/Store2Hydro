@@ -5,7 +5,7 @@
 tutorial: false
 
 run:
-  name: "hydro-phs-minimalconfig-fr"
+  name: "FR_2013-01_12_clusters"
 
 
 scenario:
@@ -77,5 +77,5 @@ solving:
 
 # Test run with: 
 # cd pypsa-eur
-# snakemake -call all --configfile ../config/s2h-minimal-V3.yaml --latency-wait 300 --cores all
-# snakemake -call solve_elec_networks --configfile ../config/s2h-minimal-V3.yaml --latency-wait 300 --cores all
+# snakemake -call all --configfile ../config/FR_2013-01_12_clusters.yaml --latency-wait 300 --cores all
+# snakemake -call solve_elec_networks --configfile ../config/FR_2013-01_12_clusters.yaml --latency-wait 300 --cores all

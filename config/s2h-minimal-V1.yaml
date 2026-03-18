@@ -52,7 +52,7 @@ renewable:
     - ror
     - hydro
     - PHS
-    hydro_max_hours: 6
+    #hydro_max_hours: 6 #hier keine Zahl, sondern eine Methode
 
 clustering:
   exclude_carriers: []

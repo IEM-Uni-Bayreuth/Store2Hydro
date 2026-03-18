@@ -4,16 +4,18 @@
 tutorial: false
 
 run:
-  name: "FR_2019_15_clusters_res72h_2030_myopic"
+  name: "FR_2019_15_clusters_res72h_myopic"
 
 scenario:
   clusters:
-    - 6
+    - 15
   opts:
     - ""
   sector-opts:
     - ""
   planning-horizons:
+    - 2020
+    - 2025
     - 2030
 
 foresight: myopic

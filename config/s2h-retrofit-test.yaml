@@ -1,0 +1,57 @@
+# Config file for Store2Hydro Project
+# Goal: MINIMAL test of the hydro-to-PHS retrofit feature
+# Uses 3 clusters, 1 month, France only, 72h resolution → very fast solve
+
+tutorial: false
+
+run:
+  name: "retrofit-test"
+
+scenario:
+  clusters:
+  - 3
+
+countries: 
+- FR
+
+snapshots:
+  start: "2013-01-01"
+  end: "2013-01-31"   # nur Januar → schneller Testlauf
+
+renewable:
+  hydro:
+    cutout: default
+    carriers:
+    - ror
+    - hydro
+    - PHS
+    # hydro_max_hours: 6  #hier keine Zahl, sondern eine Methode
+    retrofit_to_phs:
+      enable: true
+      capital_cost: 100   # sehr niedrig → Retrofit sollte IMMER gewählt werden
+
+clustering:
+  exclude_carriers: []
+  temporal:
+    #resolution_sector: 72h
+    resolution_elec: 72h   # grobe Auflösung → schnell, elec muss auf false sein bei sector coupled 
+
+lines:
+  dynamic_line_rating:
+    activate: false
+
+solving:
+  solver:
+    name: gurobi
+
+  check_objective:
+    enable: false
+
+# Test run:
+# cd pypsa-eur
+# snakemake -call solve_elec_networks --configfile ../config/s2h-retrofit-test.yaml --latency-wait 300 --cores all
+#
+# Erwartetes Ergebnis bei capital_cost=100:
+#   Alle hydro-Busse werden zu "retrofitted PHS" umgerüstet (weil fast gratis)
+#
+# Zum Vergleich: mit capital_cost=99999999 sollte KEIN Bus umgerüstet werden

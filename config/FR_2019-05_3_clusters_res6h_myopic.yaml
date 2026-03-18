@@ -1,0 +1,62 @@
+# Store2Hydro config
+# Goal: test a minimal hydro + PHS system in France
+
+tutorial: false
+
+run:
+  name: "FR_2019-05_3_clusters_res6h_myopic"
+
+foresight: myopic
+
+scenario:
+  clusters:
+  - 3
+  planning_horizons:
+  - 2020
+  - 2030
+  - 2040
+  - 2050
+
+# - 'overnight' # optimizes the entire network for 2050 without steps between
+# - 'myopic' # optimizes the network in steps between 2020 and 2050, wiht pathways between the steps
+
+countries:
+  - FR
+
+snapshots:
+# Snapshot period must overlap with the atlite cutout:
+# https://pypsa-eur.readthedocs.io/en/latest/data-cutouts.html
+
+# big problem is the opsd demand data, which only goes up to 2020-09
+  start: "2019-05-01"
+  end: "2019-06-01"
+  include: "left"
+
+atlite:
+  default_cutout: "europe-2019-sarah3-era5"
+
+
+clustering:
+  temporal:
+    resolution_elec: 6h
+
+lines:
+  dynamic_line_rating:
+    activate: false
+
+solving:
+  solver:
+    # Switch to "highs" or "cbc" if "gurobi"" is not available.
+    name: "gurobi"
+
+  check_objective:
+    enable: false
+
+load:
+  opsd_demand: false
+  supplement_synthetic: false
+
+# Test runs:
+# cd pypsa-eur
+# snakemake -call solve_elec_networks --configfile ../config/FR_2019-05_3_clusters_res6h_myopic.yaml --latency-wait 300 --cores all
+# snakemake -call results/FR_2019-05_3_clusters_res6h_myopic/networks/base_s_10_elec_2030.nc --configfile ../config/FR_2019-05_3_clusters_res6h_myopic.yaml --cores all

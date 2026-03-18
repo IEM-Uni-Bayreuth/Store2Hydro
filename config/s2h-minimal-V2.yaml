@@ -53,6 +53,10 @@ renewable:
     - hydro
     - PHS
     hydro_max_hours: 6
+    retrofit_to_phs:
+      enable: true
+      capital_cost: 500000   # EUR/MW/a — annualized cost for pump installation
+      # max_hours: 6         #hier keine Zahl, sondern eine Methode
 
 clustering:
   exclude_carriers: []
